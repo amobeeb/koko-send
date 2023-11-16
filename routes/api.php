@@ -20,3 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', \App\Http\Controllers\User\Auth\RegisterController::class);
 Route::post('login', \App\Http\Controllers\User\Auth\LoginController::class);
+Route::post('forget-password', \App\Http\Controllers\User\Auth\ForgetPasswordController::class);
+Route::post('verify-otp', [\App\Http\Controllers\OTPController::class, 'verify']);
+

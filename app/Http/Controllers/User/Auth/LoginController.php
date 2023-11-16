@@ -16,9 +16,9 @@ class LoginController extends Controller
     use ApiResponse;
     public function __invoke(LoginRequest $request, UserLoginAction $login)
     {
-        $userLoginToken = $login->execute($request);
-        if($userLoginToken){
-            return $this->success(Response::HTTP_OK, 'success', ['token' => $userLoginToken], 'user login');
+        $userLogin = $login->execute($request);
+        if($userLogin){
+            return $this->success(Response::HTTP_OK, 'success',  $userLogin, 'user logged in');
         }
         return $this->error(Response::HTTP_BAD_REQUEST, 'failed', 'invalid username or password');
     }
