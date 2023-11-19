@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class WalletResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,12 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->uuid,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'username' => $this->username,
-            'bvn' => $this->bvn,
-            'email' => $this->email
+            'bank_name' => $this->bank_name,
+            'account_number' => $this->account_number,
+            'amount' => $this->amount,
+            'flw_ref' => $this->flw_ref,
+            'flw_account_status' => $this->flw_account_status,
+            'created_at' => $this->created_at,
         ];
-
     }
 }

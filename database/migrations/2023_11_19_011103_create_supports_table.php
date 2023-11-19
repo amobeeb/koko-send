@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('supports', function (Blueprint $table) {
             $table->id();
-            $table->foreignId(\App\Models\User::class);
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('whatsapp_link')->nullable();
+            $table->string('live_chat')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('supports');
     }
 };

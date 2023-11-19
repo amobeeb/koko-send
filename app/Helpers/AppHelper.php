@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use App\Models\WalletTransaction;
+
 class AppHelper
 {
     public static function generateOTP(): ?string
@@ -21,5 +23,34 @@ class AppHelper
         $interval = $previousTime->diff($currentTime);
         $intervalInminutes = $interval->days * 24 * 60 + $interval->h * 60 + $interval->i;
         return $intervalInminutes;
+    }
+
+    public static function formatFlwIncomingTransaction(array $request)
+    {
+        $request = $request['data'];
+        return [
+            'tx_ref' => $request['tx_ref'],
+            'flw_ref' => $request['flw_ref'],
+            'amount' => $request['amount'],
+            'currency' => $request['currency'],
+            'charged_amount' => $request['charged_amount'],
+            'app_fee' => $request['app_fee'],
+            'processor_response' => $request['processor_response'],
+            'narration' => $request['narration'],
+            'status' => $request['status'],
+            'account_id' => $request['account_id'],
+            'payment_type' => $request['payment_type'],
+            'customer_name' => $request['customer']['name'],
+            'customer_phone_number' => $request['customer']['phone_number'],
+            'customer_email' => $request['customer']['email']
+        ];
+    }
+
+    public static function totalWalletTransactionByType($id, $type)
+    {
+        $total = WalletTransaction::whereHas('user', function($q) use ($id, $type){
+            $q->where(['uuid' => $id, 'transaction_type' => $type]);
+        })->sum('amount');
+        return $total;
     }
 }
