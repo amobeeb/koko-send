@@ -17,7 +17,6 @@ use Illuminate\Http\Response;
 class WalletController extends Controller
 {
     use ApiResponse;
-
     private const PAGE = 20;
 
     public function details($id)
@@ -40,7 +39,6 @@ class WalletController extends Controller
         ];
 
         return $this->success(Response::HTTP_OK, 'success', $stats, 'retrieved user wallet stats');
-
     }
 
     public function webhook(Request $request, IncomingTransactionWebhookAction $incomingTransaction)

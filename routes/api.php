@@ -33,6 +33,13 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::get('{User:uuid}/notifications', [\App\Http\Controllers\User\NotificationController::class, 'show']);
     Route::get('user/{User:uuid}/profile', [\App\Http\Controllers\User\UserController::class, 'profile']);
     Route::patch('user/{User:uuid}/change-password', [\App\Http\Controllers\User\UserController::class, 'changePassword']);
+
+
+    Route::get('bill/network-category', [\App\Http\Controllers\User\BillPaymentController::class, 'airtimeCategory']);
+    Route::get('bill/data-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlans']);
+    Route::get('bill/data-plans/category', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlansCategory']);
+
+
 });
 
 Route::post('support', [\App\Http\Controllers\SupportController::class, 'update']);
