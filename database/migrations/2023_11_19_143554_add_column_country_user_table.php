@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('country')->after('is_active');
+            $table->string('country')->default('nigeria')->after('is_active');
         });
     }
-
+ 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('country');
         });
     }
 };

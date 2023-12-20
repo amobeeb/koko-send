@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Actions\AirtimeCategoryAction;
+use App\Actions\BillPurchaseAction;
 use App\Actions\DataPlansAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\WalletResource;
@@ -41,6 +42,21 @@ class BillPaymentController extends Controller
     {
         return $this->success(Response::HTTP_OK, 'success', BillPayment::dataPlanCategory(), 'retrieved data plan category');
     }
+
+    public function purchase(Request $request, BillPurchaseAction $billPurchase)
+    {
+        $purchase = $billPurchase->execute($request->all());
+
+        if(isset($purchase['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $purchase['error']);
+        }
+
+        if(isset($purchase['success'])){
+            return $this->success(Response::HTTP_OK, 'failed', $purchase['message']);
+        }
+
+    }
+
 
 
 }

@@ -53,4 +53,24 @@ class AppHelper
         })->sum('amount');
         return $total;
     }
+
+    public static function generateTransactionRef(): ?string
+    {
+        return time().uniqid();
+    }
+
+    public static function formatBillPaymentPayload(array $request): array
+    {
+        return [
+            "amount" => $request['amount'],
+            "country" => $request['country'],
+            "customer" => $request['customer'],
+            "package_data" => $request['package_data'],
+            "recurrence" => $request['recurrence'],
+            "type" => $request['type'],
+            "reference" => self::generateTransactionRef(),
+        ];
+    }
+
+
 }

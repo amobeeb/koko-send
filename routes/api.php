@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::get('bill/data-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlans']);
     Route::get('bill/data-plans/category', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlansCategory']);
 
+    Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
+
 
 });
 

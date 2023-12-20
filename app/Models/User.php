@@ -31,7 +31,8 @@ class User extends Authenticatable
         'photo',
         'narration',
         'password',
-        'otp_at'
+        'otp_at',
+        'country'
     ];
 
     /**

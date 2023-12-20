@@ -33,6 +33,7 @@ class RegisterUserRequest extends FormRequest
             'photo' => 'nullable',
             'tx_ref' => 'nullable',
             'narration' => 'nullable',
+            'country' => 'required'
         ];
     }
 }
