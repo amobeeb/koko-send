@@ -19,7 +19,9 @@ class UserLoginAction
                 'id' => $user->uuid,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
-                'username' => $user->username,
+                'phone' => $user->phone,
+                'email' => $user->email,
+                'picture' => $user->photo,
                 'is_pin_created' => !empty($user->pin),
                'token' => $token->plainTextToken
             ];
