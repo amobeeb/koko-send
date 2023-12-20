@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Actions\ChangePasswordAction;
+use App\Actions\UserPinAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ChangePinRequest;
+use App\Http\Requests\NewPinRequest;
 use App\Http\Resources\UserResource;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -27,8 +30,35 @@ class UserController extends Controller
 
         if(isset($passwordChange['success'])){
             return $this->success(Response::HTTP_OK, 'success', [],$passwordChange['success'] );
+        } 
+    }  
+
+    public function  newPin(NewPinRequest $request, UserPinAction $userPin)
+    { 
+        $changePin = $userPin->newPin($request);
+        
+        if(isset($changePin['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $changePin['error']);
         }
 
+        if(isset($changePin['success'])){
+            return $this->success(Response::HTTP_OK, 'success', [],$changePin['success'] );
+        } 
     }
+
+    public function changePin(ChangePinRequest $request, UserPinAction $userPin)
+    {
+     
+        $passwordChange = $userPin->changePin($request);
+        if(isset($passwordChange['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $passwordChange['error']);
+        }
+
+        if(isset($passwordChange['success'])){
+            return $this->success(Response::HTTP_OK, 'success', [],$passwordChange['success'] );
+        } 
+    }
+
+    
 
 }
