@@ -16,6 +16,7 @@ class UserLoginAction
             $user->tokens()->delete();
             $token = $user->createToken($request->email);
             return [
+                'id' => $user->uuid,
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
                 'username' => $user->username,

@@ -7,7 +7,7 @@ class FWResource
     {
         return [
             "email" => $user->email,
-            "bvn" => $user->bvn,
+            "bvn" => $user->bvn ?? '12345678901',
             "firstname" => $user->first_name,
             "lastname" => $user->last_name,
             "phonenumber" => $user->phone_number,

@@ -18,6 +18,7 @@ class RegisterController extends Controller
     public function __invoke(RegisterUserRequest $request, CreateVirtualAccountAction $createVirtualAccount)
     {
         $createAccount = $createVirtualAccount->execute($request->all());
+        
         if ($createAccount == false) {
             return $this->error(Response::HTTP_BAD_REQUEST, 'failed', 'user virtual account creation failed, delete user record');
         } else {
@@ -26,11 +27,11 @@ class RegisterController extends Controller
 
             $user = User::create($request);
             $user->wallet()->create([
-                'bank_name' => $createAccount['bank_name'],
-                'account_number' => $createAccount['account_number'],
-                'flw_ref' => $createAccount['flw_ref'],
-                'flw_order_ref' => $createAccount['order_ref'],
-                'flw_account_status' => $createAccount['account_status']
+                'bank_name' => optional($createAccount)['bank_name'],
+                'account_number' => optional($createAccount)['account_number'],
+                'flw_ref' => optional($createAccount)['flw_ref'],
+                'flw_order_ref' => optional($createAccount)['order_ref'],
+                'flw_account_status' => 1
             ]);
 
             Mail::to($user)->send(new WelcomeMail($user));

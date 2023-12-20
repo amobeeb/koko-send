@@ -26,7 +26,7 @@ class RegisterUserRequest extends FormRequest
             'last_name' => 'required|max:50|alpha',
             'username' => 'required|unique:users,username',
             'phone_number' => 'required|numeric',
-            'bvn' => 'required|numeric|digits:11',
+            'bvn' => 'required|numeric|digits:11|unique:users,bvn',
             'email' => 'required|email',
             'password' => 'required|min:6',
             'pin' => 'nullable',
@@ -36,4 +36,5 @@ class RegisterUserRequest extends FormRequest
             'country' => 'required'
         ];
     }
+    
 }
