@@ -12,7 +12,7 @@ class UserLoginAction
         $user = User::whereEmail($request->email)->first();
         $verifyPassword = Hash::check($request->password, $user->password);
 
-        if($verifyPassword){
+        if ($verifyPassword) {
             $user->tokens()->delete();
             $token = $user->createToken($request->email);
             return [
@@ -23,7 +23,7 @@ class UserLoginAction
                 'email' => $user->email,
                 'picture' => $user->photo,
                 'is_pin_created' => !empty($user->pin),
-               'token' => $token->plainTextToken
+                'token' => $token->plainTextToken
             ];
         }
         return false;

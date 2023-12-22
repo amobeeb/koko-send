@@ -23,6 +23,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number, 
             'picture' => $this->photo,
+            'is_pin_created' => !empty($this->pin),
         ];
 
     }
