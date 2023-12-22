@@ -8,21 +8,24 @@ use Illuminate\Support\Facades\Hash;
 
 class VerifyOtpAction
 {
-    public function execute(array $request): bool
+    public function execute(array $request): ?array
     {
+        $message = [];
         $user = User::whereEmail($request['email'])->first();
 
         #check otp expiration
         $timeInterval = AppHelper::dateInterval($user->otp_at, now());
         if(!$timeInterval || $timeInterval > 30){
-           return false;
+            $message['error'] = 'OTP expired'; 
         }else {
             $checkOtp = Hash::check($request['otp'], $user->otp);
             if($checkOtp){
-               return true;
+                $message['success'] = 'OTP verification successful'; 
+            } else {
+                $message['error'] = 'Invalid OTP'; 
             }
         }
-
+        return $message;
 
 
     }

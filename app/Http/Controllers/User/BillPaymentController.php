@@ -6,8 +6,7 @@ use App\Actions\AirtimeCategoryAction;
 use App\Actions\BillPurchaseAction;
 use App\Actions\DataPlansAction;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\WalletResource;
-use App\Models\User;
+use App\Http\Requests\DataPurchaseRequest;
 use App\Services\Flutterwave\BillPayment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -43,16 +42,16 @@ class BillPaymentController extends Controller
         return $this->success(Response::HTTP_OK, 'success', BillPayment::dataPlanCategory(), 'retrieved data plan category');
     }
 
-    public function purchase(Request $request, BillPurchaseAction $billPurchase)
+    public function purchase(DataPurchaseRequest $request, BillPurchaseAction $billPurchase)
     {
-        $purchase = $billPurchase->execute($request->all());
+        $response = $billPurchase->execute($request->all());
 
-        if(isset($purchase['error'])){
-            return $this->error(Response::HTTP_OK, 'failed', $purchase['error']);
+        if(isset($response['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $response['error']);
         }
-
-        if(isset($purchase['success'])){
-            return $this->success(Response::HTTP_OK, 'failed', $purchase['message']);
+        
+        if(isset($response['success'])){
+            return $this->success(Response::HTTP_OK, 'success', $response['data'], $response['message']);
         }
 
     }

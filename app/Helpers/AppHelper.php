@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Country;
 use App\Models\WalletTransaction;
 
 class AppHelper
@@ -64,12 +65,18 @@ class AppHelper
         return [
             "amount" => $request['amount'],
             "country" => $request['country'],
-            "customer" => $request['customer'],
+            "customer" => $request['phone_no'],
             "package_data" => $request['package_data'],
             "recurrence" => $request['recurrence'],
             "type" => $request['type'],
+            "biller_name" => $request['type'],
             "reference" => self::generateTransactionRef(),
         ];
+    }
+
+    public  static function currentCountry()
+    {
+        return Country::where('status', true)->first();
     }
 
 

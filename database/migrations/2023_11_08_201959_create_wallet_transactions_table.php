@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(\App\Models\Wallet::class);
             $table->double('amount', 8, 2)->default(0.00);
             $table->string('transaction_type');
-            $table->string('flw_tx_ref');
-            $table->string('flw_ref');
+            $table->string('flw_tx_ref')->nullable();
+            $table->string('flw_ref')->nullable();
             $table->string('flw_response')->nullable();
             $table->string('flw_status')->nullable();
             $table->string('flw_currency')->nullable();
