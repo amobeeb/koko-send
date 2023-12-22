@@ -15,7 +15,7 @@ class VerifyOtpAction
 
         #check otp expiration
         $timeInterval = AppHelper::dateInterval($user->otp_at, now());
-        if(!$timeInterval || $timeInterval > 30){
+        if($timeInterval > 30){
             $message['error'] = 'OTP expired'; 
         }else {
             $checkOtp = Hash::check($request['otp'], $user->otp);
