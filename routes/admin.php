@@ -1,0 +1,50 @@
+<?php
+
+use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\Admin\LogoutController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
+
+Route::group(['prefix' => 'admin'], function(){
+    Route::post('login', LoginController::class);
+
+    Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
+        Route::post('logout', LogoutController::class);
+    });
+});
+
+
+// Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
+//     Route::get('wallet/{User:uuid}/details', [\App\Http\Controllers\User\WalletController::class, 'details']);
+//     Route::get('wallet/{User:uuid}/stats', [\App\Http\Controllers\User\WalletController::class, 'stats']);
+//     Route::get('wallet/{User:uuid}/transactions', [\App\Http\Controllers\User\WalletTransactionController::class, 'transactions']);
+//     Route::get('wallet/transactions/{WalletTransaction:uuid}/details', [\App\Http\Controllers\User\WalletTransactionController::class, 'details']);
+//     Route::get('{User:uuid}/notifications', [\App\Http\Controllers\User\NotificationController::class, 'show']);
+//     Route::get('user/{User:uuid}/profile', [\App\Http\Controllers\User\UserController::class, 'profile']);
+//     Route::patch('user/{User:uuid}/change-password', [\App\Http\Controllers\User\UserController::class, 'changePassword']);
+//     Route::post('user/new-pin', [\App\Http\Controllers\User\UserController::class, 'newPin']);
+//     Route::post('user/change-pin', [\App\Http\Controllers\User\UserController::class, 'changePin']);
+
+//     Route::get('bill/network-category', [\App\Http\Controllers\User\BillPaymentController::class, 'airtimeCategory']);
+//     Route::get('bill/data-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlans']);
+//     Route::get('bill/data-plans/category', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlansCategory']);
+
+//     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
+
+//     // verify bill payment
+// });
+
+// Route::post('support', [\App\Http\Controllers\SupportController::class, 'update']);
+// Route::get('support', [\App\Http\Controllers\SupportController::class, 'index']);
+// Route::put('webhook', [\App\Http\Controllers\User\WalletController::class, 'webhook']);

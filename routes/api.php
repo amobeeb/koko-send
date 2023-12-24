@@ -28,14 +28,14 @@ Route::post('login', \App\Http\Controllers\User\Auth\LoginController::class);
 Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::get('wallet/{User:uuid}/details', [\App\Http\Controllers\User\WalletController::class, 'details']);
     Route::get('wallet/{User:uuid}/stats', [\App\Http\Controllers\User\WalletController::class, 'stats']);
-    Route::get('wallet/{User:uuid}/transactions', [\App\Http\Controllers\User\WalletController::class, 'transactions']);
+    Route::get('wallet/{User:uuid}/transactions', [\App\Http\Controllers\User\WalletTransactionController::class, 'transactions']);
     Route::get('wallet/transactions/{WalletTransaction:uuid}/details', [\App\Http\Controllers\User\WalletTransactionController::class, 'details']);
     Route::get('{User:uuid}/notifications', [\App\Http\Controllers\User\NotificationController::class, 'show']);
     Route::get('user/{User:uuid}/profile', [\App\Http\Controllers\User\UserController::class, 'profile']);
+    Route::patch('user/{User:uuid}/upload-picture', [\App\Http\Controllers\User\UserController::class, 'uploadPicture']);
     Route::patch('user/{User:uuid}/change-password', [\App\Http\Controllers\User\UserController::class, 'changePassword']);
     Route::post('user/new-pin', [\App\Http\Controllers\User\UserController::class, 'newPin']);
     Route::post('user/change-pin', [\App\Http\Controllers\User\UserController::class, 'changePin']);
-
 
     Route::get('bill/network-category', [\App\Http\Controllers\User\BillPaymentController::class, 'airtimeCategory']);
     Route::get('bill/data-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlans']);
@@ -44,7 +44,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
 
     // verify bill payment
-
 });
 
 Route::post('support', [\App\Http\Controllers\SupportController::class, 'update']);

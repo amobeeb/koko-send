@@ -39,7 +39,7 @@ class WalletController extends Controller
         ];
 
         return $this->success(Response::HTTP_OK, 'success', $stats, 'retrieved user wallet stats');
-    }
+    } 
 
     public function webhook(Request $request, IncomingTransactionWebhookAction $incomingTransaction)
     {

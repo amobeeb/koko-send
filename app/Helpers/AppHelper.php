@@ -79,5 +79,11 @@ class AppHelper
         return Country::where('status', true)->first();
     }
 
+    public static function generateFileName($file)
+    {
+        $extension = $file->getClientOriginalExtension();
+        $fileName = mt_rand(00000, 999999) . uniqid();
+        return $fileName . '.' . $extension;
+    }
 
 }

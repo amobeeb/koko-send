@@ -15,10 +15,11 @@ class CreateVirtualAccountAction
 
         try {
             $baseUrl = config('koko.FLW_BASE_URL');
+            
             $response = Http::withHeaders(FWResource::fwHeader())->post("$baseUrl/virtual-account-numbers", $payload);
 
             $data = json_decode($response->body(), true);
-            
+           
             if ($response->successful()) {  
                 return $data['data'];
             } else {
