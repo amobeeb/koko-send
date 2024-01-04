@@ -33,6 +33,27 @@ class BillPayment
         }
     }
 
+    public static function cableCategory()
+    {
+        try {
+            $baseUrl = config('koko.FLW_BASE_URL');
+            $response = Http::withHeaders(FWResource::fwHeader())->get("$baseUrl/bill-categories");
+            $data = json_decode($response->body(), true);
+             
+            if ($response->successful()) {
+                $data = $data['data']; 
+                $dataPlan = self::filterNCablePlans($data, 'NG');
+                return $dataPlan;
+            } else {
+                LoggerService::error('Non User', 1, 300, $data['message'] ?? 'unable to get network category', __METHOD__);
+                return false;
+            }
+        } catch (\Exception $e) {
+            LoggerService::error(request()->user()->id, 1, $e->getCode(), json_encode($e->getMessage()), __METHOD__);
+            return false;
+        }
+    }
+
     public static function dataPlans($dataId)
     {
         try {
@@ -84,6 +105,18 @@ class BillPayment
                 $airtime[] = $_data;
             }
         }
+        return $airtime;
+    }
+
+    public static function filterNCablePlans($data, $country = 'NG'): array
+    {
+        $airtime = [];
+        dd($data);
+        // foreach ($data as $_data) {
+        //     if ($_data['is_airtime'] == false && $_data['country'] == $country && $_data['biller_code'] == $bill_code) {
+        //         $airtime[] = $_data;
+        //     }
+        // }
         return $airtime;
     }
 

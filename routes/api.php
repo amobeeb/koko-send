@@ -43,6 +43,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
 
     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
 
+    Route::get('bill/cable-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'cables']);
+ 
     // verify bill payment
 });
 

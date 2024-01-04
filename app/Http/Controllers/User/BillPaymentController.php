@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Actions\AirtimeCategoryAction;
 use App\Actions\BillPurchaseAction;
+use App\Actions\CablesPlanAction;
 use App\Actions\DataPlansAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DataPurchaseRequest;
@@ -22,6 +23,16 @@ class BillPaymentController extends Controller
             return $this->success(Response::HTTP_OK, 'success', $airtime, 'retrieved airtime category');
         } else {
             return $this->error(Response::HTTP_OK, 'failed', 'unable to retrieved airtime category');
+        }
+    }
+
+    public function cables(CablesPlanAction $cable)
+    {
+        $cable = $cable->execute();
+        if ($cable) {
+            return $this->success(Response::HTTP_OK, 'success', $cable, 'retrieved cable category');
+        } else {
+            return $this->error(Response::HTTP_OK, 'failed', 'unable to retrieved cable category');
         }
     }
 

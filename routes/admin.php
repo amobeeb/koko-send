@@ -19,31 +19,33 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin'], function(){
     Route::post('login', LoginController::class);
 
-    Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
-        Route::post('logout', LogoutController::class);
+    Route::group(['middleware' => ['auth:sanctum', 'verify_admin']], function(){
+        Route::controller(\App\Http\Controllers\Admin\UserController::class)->group(function() {
+            Route::get('users', 'index');
+            Route::patch('users/{user:uuid}/status', 'suspend');
+            Route::delete('users/{user:uuid}/delete', 'delete');
+            Route::patch('users/{user:uuid}/restore', 'restore');
+            Route::get('users/deleted','deletedList');
+        });
+
+        Route::controller(\App\Http\Controllers\Admin\TransactionController::class)->group(function(){
+            Route::get('transactions', 'index');
+            Route::get('transactions/{Transaction:id}/details', 'show');
+            Route::get('transactions/{User:uuid}/user', 'user');
+        });
+
+        Route::controller(\App\Http\Controllers\Admin\WalletTransactionController::class)->group(function(){
+            Route::get('wallet-transactions', 'index');
+            Route::get('wallet-transactions/{Transaction:id}/details', 'show');
+            Route::get('wallet-transactions/{User:uuid}/user', 'user');
+        });
+
+
     });
 });
 
 
-// Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
-//     Route::get('wallet/{User:uuid}/details', [\App\Http\Controllers\User\WalletController::class, 'details']);
-//     Route::get('wallet/{User:uuid}/stats', [\App\Http\Controllers\User\WalletController::class, 'stats']);
-//     Route::get('wallet/{User:uuid}/transactions', [\App\Http\Controllers\User\WalletTransactionController::class, 'transactions']);
-//     Route::get('wallet/transactions/{WalletTransaction:uuid}/details', [\App\Http\Controllers\User\WalletTransactionController::class, 'details']);
-//     Route::get('{User:uuid}/notifications', [\App\Http\Controllers\User\NotificationController::class, 'show']);
-//     Route::get('user/{User:uuid}/profile', [\App\Http\Controllers\User\UserController::class, 'profile']);
-//     Route::patch('user/{User:uuid}/change-password', [\App\Http\Controllers\User\UserController::class, 'changePassword']);
-//     Route::post('user/new-pin', [\App\Http\Controllers\User\UserController::class, 'newPin']);
-//     Route::post('user/change-pin', [\App\Http\Controllers\User\UserController::class, 'changePin']);
 
-//     Route::get('bill/network-category', [\App\Http\Controllers\User\BillPaymentController::class, 'airtimeCategory']);
-//     Route::get('bill/data-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlans']);
-//     Route::get('bill/data-plans/category', [\App\Http\Controllers\User\BillPaymentController::class, 'dataPlansCategory']);
-
-//     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
-
-//     // verify bill payment
-// });
 
 // Route::post('support', [\App\Http\Controllers\SupportController::class, 'update']);
 // Route::get('support', [\App\Http\Controllers\SupportController::class, 'index']);
