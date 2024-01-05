@@ -20,6 +20,7 @@ Route::group(['prefix' => 'admin'], function(){
     Route::post('login', LoginController::class);
 
     Route::group(['middleware' => ['auth:sanctum', 'verify_admin']], function(){
+        Route::get('profile', [\App\Http\Controllers\Admin\AdminController::class, 'profile']);
         Route::controller(\App\Http\Controllers\Admin\UserController::class)->group(function() {
             Route::get('users', 'index');
             Route::patch('users/{user:uuid}/status', 'suspend');
