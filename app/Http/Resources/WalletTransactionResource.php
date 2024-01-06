@@ -26,6 +26,19 @@ class WalletTransactionResource extends JsonResource
             'flw_app_fee' => $this->flw_app_fee,
             'flw_payment_type' => $this->flw_payment_type,
             'flw_account_id' => $this->flw_account_id,
+            'wallet' => [
+                "bank_name"=> $this->wallet->bank_name,
+                "account_number"=>  $this->wallet->account_number,
+            ],
+            'user' => [
+                "uuid" => $this->user->uuid,
+                "first_name"=> $this->user->first_name,
+                "last_name"=> $this->user->last_name,
+                "username"=> $this->user->username,
+                "phone_number"=> $this->user->phone_number,
+            ]
+
+
         ];
     }
 }

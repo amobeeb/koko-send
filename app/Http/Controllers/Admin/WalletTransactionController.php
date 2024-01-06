@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\WalletTransactionCollection;
+use App\Http\Resources\WalletTransactionResource;
 use App\Models\Transaction;
 use App\Models\WalletTransaction;
 use App\Traits\ApiResponse;
@@ -14,16 +16,17 @@ class WalletTransactionController extends Controller
     private const PerPage = 20;
     public function index()
     {
-        return $this->success(\Illuminate\Http\Response::HTTP_OK, 'success', WalletTransaction::latest('id')->paginate(20), true);
+        $walletTransaction = WalletTransaction::with(['wallet', 'user'])->latest('id')->paginate(20);
+        return $this->success(\Illuminate\Http\Response::HTTP_OK, 'success', WalletTransactionResource::collection($walletTransaction), true);
     }
 
     public function show($id)
     {
-        $transaction = WalletTransaction::whereId($id)->first();
-        if ($transaction){
-            return $this->success(\Illuminate\Http\Response::HTTP_OK, 'success', $transaction);
+        $transaction = WalletTransaction::whereUuid($id)->first();
+        if (!empty($transaction)){
+            return $this->success(\Illuminate\Http\Response::HTTP_OK, 'success', (new WalletTransactionResource($transaction)));
         }
-        return $this->success(\Illuminate\Http\Response::HTTP_BAD_REQUEST, 'success', $transaction);
+        return $this->error(\Illuminate\Http\Response::HTTP_BAD_REQUEST, 'failed', 'unable to retrieve');
     }
 
     /**
