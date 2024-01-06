@@ -23,6 +23,7 @@ Route::group(['prefix' => 'admin'], function(){
         Route::get('profile', [\App\Http\Controllers\Admin\AdminController::class, 'profile']);
         Route::controller(\App\Http\Controllers\Admin\UserController::class)->group(function() {
             Route::get('users', 'index');
+            Route::get('users/{user:uuid}', 'show');
             Route::patch('users/{user:uuid}/status', 'suspend');
             Route::delete('users/{user:uuid}/delete', 'delete');
             Route::patch('users/{user:uuid}/restore', 'restore');

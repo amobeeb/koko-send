@@ -22,6 +22,11 @@ class UserController extends Controller
         return $this->success(Response::HTTP_OK, 'success', UserResource::collection($user), 'retrieved user', true);
     }
 
+    public function show($id)
+    {
+        return $this->success(Response::HTTP_OK,'success', (new UserResource(User::whereUuid($id)->first())), 'user details retrieved');
+    }
+
     public function suspend($id, SuspendUser $suspendUser)
     {
         $response = $suspendUser->execute($id);
@@ -48,8 +53,8 @@ class UserController extends Controller
         }
     }
 
-    public function deletedList(SoftDeletesUser $softDeletesUser)
+    public function deletedList(SoftDeletesUser $softDelΩetesUser)
     {
-            return $this->success(Response::HTTP_OK,'success', UserResource::collection($softDeletesUser->list()), 'deleted user retrieved');
+        return $this->success(Response::HTTP_OK,'success', UserResource::collection($softDeletesUser->list()), 'deleted user retrieved');
     }
 }
