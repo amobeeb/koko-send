@@ -62,4 +62,91 @@ class BillPurchaseAction
         }
         return true;
     }
+
+    public function cablePurchase($request)
+    {
+        $payload = AppHelper::formatCableBillPaymentPayload($request);
+
+        if (!$this->checkWallet($payload['amount'])) {
+            $response['error'] = 'insufficient amount on wallet';
+            return $response;
+        }
+
+        Transaction::create([
+            'reference' => $payload['reference'],
+            'user_id' => request()->user()->id,
+            'type' => $payload['type'],
+            'biller_name' => $payload['type'],
+            'amount' => $payload['amount'],
+            'package_data' => 'Cable',
+            'recurrence' => $payload['recurrence'],
+            'country' => $payload['country'],
+            'customer' => $payload['customer'],
+            'customer_type'  => 'Decoder'
+        ]);
+
+        $response = BillPayment::purchase($payload);
+
+        if (is_array($response)) {
+            if (array_key_exists('error', $response)) {
+                return $response;
+            }
+
+            if (!$response) {
+                $response['error'] = 'error';
+                return $response;
+            }
+
+            if (array_key_exists('success', $response)) {
+                $response['success'] = 'success';
+                return $response;
+            }
+        }
+        $response['error'] = 'error';
+        return $response;
+    }
+
+    public function electricityPurchase($request)
+    {
+        $payload = AppHelper::formatElectricityBillPaymentPayload($request);
+
+        if (!$this->checkWallet($payload['amount'])) {
+            $response['error'] = 'insufficient amount on wallet';
+            return $response;
+        }
+
+        Transaction::create([
+            'reference' => $payload['reference'],
+            'user_id' => request()->user()->id,
+            'type' => $payload['type'],
+            'biller_name' => $payload['type'],
+            'amount' => $payload['amount'],
+            'package_data' => 'Cable',
+            'recurrence' => $payload['recurrence'],
+            'country' => $payload['country'],
+            'customer' => $payload['customer'],
+            'customer_type'  => 'Decoder'
+        ]);
+
+        $response = BillPayment::purchase($payload);
+
+        if (is_array($response)) {
+            if (array_key_exists('error', $response)) {
+                return $response;
+            }
+
+            if (!$response) {
+                $response['error'] = 'error';
+                return $response;
+            }
+
+            if (array_key_exists('success', $response)) {
+                $response['success'] = 'success';
+                return $response;
+            }
+        }
+        $response['error'] = 'error';
+        return $response;
+    }
+
 }

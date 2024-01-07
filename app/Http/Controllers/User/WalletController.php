@@ -13,6 +13,7 @@ use App\Models\WalletTransaction;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class WalletController extends Controller
 {
@@ -39,7 +40,7 @@ class WalletController extends Controller
         ];
 
         return $this->success(Response::HTTP_OK, 'success', $stats, 'retrieved user wallet stats');
-    } 
+    }
 
     public function webhook(Request $request, IncomingTransactionWebhookAction $incomingTransaction)
     {

@@ -8,6 +8,7 @@ use App\Models\Wallet;
 use App\Models\WalletTransaction;
 use App\Services\LoggerService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BillPayment
 {
@@ -33,15 +34,37 @@ class BillPayment
         }
     }
 
+    public static function electricityCategory()
+    {
+        try {
+            $baseUrl = config('koko.FLW_BASE_URL');
+            $response = Http::withHeaders(FWResource::fwHeader())->get("$baseUrl/bill-categories");
+            $data = json_decode($response->body(), true);
+
+            if ($response->successful()) {
+                $data = $data['data'];
+                $airtime = self::filterNigeriaElecticity($data, 'NG');
+                return $airtime;
+            } else {
+                LoggerService::error('Non User', 1, 300, $data['message'] ?? 'unable to get network category', __METHOD__);
+                return false;
+            }
+        } catch (\Exception $e) {
+            LoggerService::error(request()->user()->id, 1, $e->getCode(), json_encode($e->getMessage()), __METHOD__);
+            return false;
+        }
+    }
+
+
     public static function cableCategory()
     {
         try {
             $baseUrl = config('koko.FLW_BASE_URL');
             $response = Http::withHeaders(FWResource::fwHeader())->get("$baseUrl/bill-categories");
             $data = json_decode($response->body(), true);
-             
+
             if ($response->successful()) {
-                $data = $data['data']; 
+                $data = $data['data'];
                 $dataPlan = self::filterNCablePlans($data, 'NG');
                 return $dataPlan;
             } else {
@@ -111,14 +134,26 @@ class BillPayment
     public static function filterNCablePlans($data, $country = 'NG'): array
     {
         $airtime = [];
-        dd($data);
-        // foreach ($data as $_data) {
-        //     if ($_data['is_airtime'] == false && $_data['country'] == $country && $_data['biller_code'] == $bill_code) {
-        //         $airtime[] = $_data;
-        //     }
-        // }
+         foreach ($data as $_data) {
+             if ($_data['is_airtime'] == false && $_data['country'] == $country && strpos(strtolower($_data['name']), 'dstv') !== false) {
+                 $airtime[] = $_data;
+             }
+         }
         return $airtime;
     }
+
+    public static function filterNigeriaElecticity($data, $country = 'NG'): array
+    {
+        $airtime = [];
+        foreach ($data as $_data) {
+            if ($_data['is_airtime'] == false && $_data['country'] == $country && $_data['label_name'] == 'Meter Number') {
+                $airtime[] = $_data;
+            }
+        }
+        return $airtime;
+    }
+
+
 
     public static function purchase(array $payload)
     {
@@ -134,9 +169,9 @@ class BillPayment
                 ]);
 
                 (new self)->debitWallet($payload, $data);
-                
+
                 $data['success'] = 'success';
-                
+
                 return $data;
             } else {
                 LoggerService::error('User', optional(request()->user())->id ?? '', 300, $data['message'] ?? 'unable to get network category', __METHOD__);
@@ -167,8 +202,7 @@ class BillPayment
             'flw_currency' => (AppHelper::currentCountry())->currency,
             'flw_tx_ref' => optional($data['data'])['reference'],
             'flw_ref' => optional($data['data'])['flw_ref'],
-            'flw_response' => optional($data)['message'] 
+            'flw_response' => optional($data)['message']
         ]);
     }
 }
- 

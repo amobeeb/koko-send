@@ -6,8 +6,11 @@ use App\Actions\AirtimeCategoryAction;
 use App\Actions\BillPurchaseAction;
 use App\Actions\CablesPlanAction;
 use App\Actions\DataPlansAction;
+use App\Actions\ElectricityPlanAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CablePurchaseRequest;
 use App\Http\Requests\DataPurchaseRequest;
+use App\Http\Requests\ElectricityPurchaseRequest;
 use App\Services\Flutterwave\BillPayment;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -36,6 +39,16 @@ class BillPaymentController extends Controller
         }
     }
 
+    public function electricity(ElectricityPlanAction $electricity)
+    {
+        $electricity = $electricity->execute();
+        if ($electricity) {
+            return $this->success(Response::HTTP_OK, 'success', $electricity, 'retrieved electricity category');
+        } else {
+            return $this->error(Response::HTTP_OK, 'failed', 'unable to retrieved electricity category');
+        }
+    }
+
     public function dataPlans(Request $request, DataPlansAction $dataPlan)
     {
         $request = request()->search;
@@ -60,12 +73,42 @@ class BillPaymentController extends Controller
         if(isset($response['error'])){
             return $this->error(Response::HTTP_OK, 'failed', $response['error']);
         }
-        
+
         if(isset($response['success'])){
             return $this->success(Response::HTTP_OK, 'success', $response['data'], $response['message']);
         }
 
     }
+
+    public function purchaseCable(CablePurchaseRequest $request, BillPurchaseAction $billPurchase)
+    {
+        $response = $billPurchase->cablePurchase($request->all());
+
+        if(isset($response['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $response['error']);
+        }
+
+        if(isset($response['success'])){
+            return $this->success(Response::HTTP_OK, 'success', $response['data'], $response['message']);
+        }
+    }
+
+    public function purchaseElectricity(ElectricityPurchaseRequest $request, BillPurchaseAction $billPurchase)
+    {
+        $response = $billPurchase->electricityPurchase($request->all());
+
+        if(isset($response['error'])){
+            return $this->error(Response::HTTP_OK, 'failed', $response['error']);
+        }
+
+        if(isset($response['success'])){
+            return $this->success(Response::HTTP_OK, 'success', $response['data'], $response['message']);
+        }
+    }
+
+
+
+
 
 
 

@@ -44,10 +44,14 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
 
     Route::get('bill/cable-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'cables']);
- 
+    Route::get('bill/cable/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseCable']);
+
+    Route::get('bill/electricity-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'electricity']);
+    Route::get('bill/electricity/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseElectricity']);
+
     // verify bill payment
 });
 
 Route::post('support', [\App\Http\Controllers\SupportController::class, 'update']);
 Route::get('support', [\App\Http\Controllers\SupportController::class, 'index']);
-Route::put('webhook', [\App\Http\Controllers\User\WalletController::class, 'webhook']);
+Route::post('webhook', [\App\Http\Controllers\User\WalletController::class, 'webhook']);

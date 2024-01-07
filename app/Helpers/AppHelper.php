@@ -74,6 +74,30 @@ class AppHelper
         ];
     }
 
+    public static function formatCableBillPaymentPayload(array $request): array
+    {
+        return [
+            "amount" => $request['amount'],
+            "country" => $request['country'],
+            "customer" => $request['decoder_number'],
+            "type" => $request['type'],
+            "reference" => self::generateTransactionRef(),
+            "recurrence" => $request['recurrence'],
+        ];
+    }
+
+    public static function formatElectricityBillPaymentPayload(array $request): array
+    {
+        return [
+            "amount" => $request['amount'],
+            "country" => $request['country'],
+            "customer" => $request['meter_number'],
+            "type" => $request['type'],
+            "reference" => self::generateTransactionRef(),
+            "recurrence" => $request['recurrence'],
+        ];
+    }
+
     public  static function currentCountry()
     {
         return Country::where('status', true)->first();
