@@ -26,6 +26,7 @@ class WalletTransactionResource extends JsonResource
             'flw_app_fee' => $this->flw_app_fee,
             'flw_payment_type' => $this->flw_payment_type,
             'flw_account_id' => $this->flw_account_id,
+            'created_date' => $this->created_at,
             'wallet' => [
                 "bank_name"=> $this->wallet->bank_name,
                 "account_number"=>  $this->wallet->account_number,
