@@ -135,7 +135,7 @@ class BillPayment
     {
         $airtime = [];
          foreach ($data as $_data) {
-             if ($_data['is_airtime'] == false && $_data['country'] == $country && strpos(strtolower($_data['name']), 'dstv') !== false) {
+             if ($_data['is_airtime'] == false && $_data['country'] == $country && $_data['label_name'] == 'SmartCard Number') {
                  $airtime[] = $_data;
              }
          }

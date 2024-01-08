@@ -44,10 +44,10 @@ Route::group(['middleware' => ['auth:sanctum', 'verify_user']], function(){
     Route::post('bill/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchase']);
 
     Route::get('bill/cable-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'cables']);
-    Route::get('bill/cable/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseCable']);
+    Route::post('bill/cable/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseCable']);
 
     Route::get('bill/electricity-plans', [\App\Http\Controllers\User\BillPaymentController::class, 'electricity']);
-    Route::get('bill/electricity/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseElectricity']);
+    Route::post('bill/electricity/purchase', [\App\Http\Controllers\User\BillPaymentController::class, 'purchaseElectricity']);
 
     // verify bill payment
 });
